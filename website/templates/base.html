@@ -29,11 +29,21 @@
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
+          {% if current_user.is_authenticated %}
           <li class="nav-item active">
-            <a class="nav-link" href="/home"
+            <a class="nav-link" href="/"
               >Home <span class="sr-only">(current)</span></a
             >
           </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="/create-post"
+              >Create post <span class="sr-only"></span></a
+            >
+          </li>
+          <li class="nav-item active">
+            <a href="/logout" class="nav-link">Logout</a>
+          </li>
+          {% else %}
           <li class="nav-item">
             <a class="nav-link" href="/login">Login</a>
           </li>
@@ -41,6 +51,7 @@
           <li class="nav-item">
             <a class="nav-link" href="/signup">Signup</a>
           </li>
+          {% endif %}
         </ul>
       </div>
     </nav>
@@ -49,7 +60,13 @@
     <div
       class="alert alert-dark alert-dismissible fade show"
       role="alert"
-      style="width: 60%; margin: auto; position: absolute; right: 10%; left: 10%;"
+      style="
+        width: 60%;
+        margin: auto;
+        position: absolute;
+        right: 10%;
+        left: 10%;
+      "
     >
       {{message}}
       <button

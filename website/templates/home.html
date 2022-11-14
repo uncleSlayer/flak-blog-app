@@ -1,5 +1,39 @@
-{% extends 'base.html' %}
-{% block title %}Home{% endblock %}
-{% block content %}
-    <h1>Hello, {{name}}...!!</h1>
+{% extends 'base.html' %} {% block title %}Home{% endblock %} {% block content
+%}
+<h1 align="center">
+  Hello, {{current_user.username}}...!! These are all the posts
+</h1>
+<div class="post-display">
+  {% for post in all_posts %}
+  <div class="card">
+    <div class="card-header">
+      <p style="display: inline">{{ post.user.username }}</p>
+      <div class="dropdown" style="display: inline">
+        <button
+          class="btn btn-secondary dropdown-toggle"
+          type="button"
+          id="dropdownMenuButton"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Options
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          {% if current_user.username == post.user.username %}
+          <a class="dropdown-item" href="/delete-post/{{post.id}}">delete post</a>
+          {% endif %}
+          <a class="dropdown-item" href="#">Another action (update coming soon)</a>
+          <a class="dropdown-item" href="#">Something else here (update coming soon)</a>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="card-text">{{ post.text }}</p>
+      <div class="card-header">{{ post.creation_date }}</div>
+    </div>
+  </div>
+  <br>
+  {% endfor %}
+</div>
 {% endblock %}

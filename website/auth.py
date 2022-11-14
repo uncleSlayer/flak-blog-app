@@ -42,15 +42,15 @@ def signup():
             db.session.commit()
             print('success')
             flash('user created successfully')
-            return redirect(url_for('/login'))
+            return redirect(url_for('auth.login'))
 
     return render_template('signup.html')
 
-@login_required
 @auth.route('/logout')
+@login_required
 def logout():
     logout_user()
-    return render_template('signup.html')
+    return render_template('login.html')
 
 
 @auth.route('/login', methods=['GET', 'POST'])

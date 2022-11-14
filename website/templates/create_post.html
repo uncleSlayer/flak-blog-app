@@ -3,4 +3,11 @@
 Create post
 {% endblock %}
 {% block content %}
+
+<h3 align="center">Create post</h3>
+<form action="/create-post" method="post" align="center">
+    <textarea name="post" id="post" cols="30" rows="10" class="form-control"></textarea>
+    <br>
+    <input class="btn btn-primary" type="submit" value="Create post">
+</form>
 {% endblock %}
