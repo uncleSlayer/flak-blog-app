@@ -47,3 +47,34 @@ def delete_post(id):
         db.session.commit()
         flash('post deleted', category='success')
     return redirect(url_for('views.home'))
+
+@views.route('/create-comments/<post_id>', methods = ['GET', 'POST'])
+def fetch_comments(post_id):
+    from .models import Comments, Posts
+    from website import db
+
+    if request.method == 'POST':
+        comment_data = request.form.get('comment')
+        comment_to_add = Comments(text = comment_data, author = current_user.id, post_id = post_id)
+        post = Posts.query.filter(Posts.id == post_id).first()
+        print(post)
+        post.comments.append(comment_to_add)
+        db.session.add(comment_to_add)
+
+        db.session.commit()
+        
+        flash('comment successfully created', category='success')
+    return redirect(url_for('views.home'))
+
+
+@views.route('/delete-comment/<comment_id>')
+def delete_comment(comment_id):
+    from website.models import Comments
+    from website import db
+
+    comment_to_delete = Comments.query.filter(Comments.id == comment_id).first()
+
+    db.session.delete(comment_to_delete)
+    db.session.commit()
+
+    return redirect(url_for('views.home'))

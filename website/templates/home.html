@@ -7,7 +7,7 @@
   {% for post in all_posts %}
   <div class="card">
     <div class="card-header">
-      <p style="display: inline">{{ post.user.username }}</p>
+      <p style="display: inline">{{ post.post_user.username }}</p>
       <div class="dropdown" style="display: inline">
         <button
           class="btn btn-secondary dropdown-toggle"
@@ -20,11 +20,17 @@
           Options
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          {% if current_user.username == post.user.username %}
-          <a class="dropdown-item" href="/delete-post/{{post.id}}">delete post</a>
+          {% if current_user.username == post.post_user.username %}
+          <a class="dropdown-item" href="/delete-post/{{post.id}}"
+            >delete post</a
+          >
           {% endif %}
-          <a class="dropdown-item" href="#">Another action (update coming soon)</a>
-          <a class="dropdown-item" href="#">Something else here (update coming soon)</a>
+          <a class="dropdown-item" href="#"
+            >Another action (update coming soon)</a
+          >
+          <a class="dropdown-item" href="#"
+            >Something else here (update coming soon)</a
+          >
         </div>
       </div>
     </div>
@@ -32,8 +38,47 @@
       <p class="card-text">{{ post.text }}</p>
       <div class="card-header">{{ post.creation_date }}</div>
     </div>
+    <!-- ---------- comments ---------- -->
+    <div class="view-comments">
+      <h4 style="margin-left: 20px;">Comments</h4>
+      {% for comment in post.comments %}
+      <div class="card">
+        <div class="card-body">
+          {{ comment.comment_user.username }}:{{ comment.text }}
+          {{current_user.id}}
+          {{comment.comment_user.id}}
+
+          {% if current_user.id == comment.comment_user.id %}
+          <a class="btn btn-danger" href="/delete-comment/{{ comment.id }}">Delete comment</a>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="comments">
+      <form
+        style="width: 80% !important; margin: auto"
+        align="center"
+        action="/create-comments/{{ post.id }}"
+        method="post"
+      >
+        <div class="form-group">
+          <label for="exampleInputEmail1">Comment</label>
+          <input
+            style="width: 80%; margin: auto"
+            type="comment"
+            class="form-control"
+            id="comment"
+            aria-describedby="comment"
+            name="comment"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Comment</button>
+      </form>
+      <br />
+    </div>
   </div>
-  <br>
+  <br />
   {% endfor %}
 </div>
 {% endblock %}
