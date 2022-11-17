@@ -35,21 +35,44 @@
       </div>
     </div>
     <div class="card-body">
-      <p class="card-text">{{ post.text }}</p>
-      <div class="card-header">{{ post.creation_date }}</div>
+      <p class="card-text" style="display: inline-block">{{ post.text }}</p>
+      <div class="card-header">
+        {{ post.creation_date }}
+        <p>({{ post.likes|length }}
+        
+          {% set liked = false %}
+  
+          {% for like in post.likes %}
+          {% if like.author == current_user.id %}
+          {% set liked = true %}
+          {% endif %}
+          {% endfor %}
+  
+          {% if liked %}
+          {% set like_class = 'fas fa-thumbs-up' %}
+          {% else %}
+          {% set like_class = 'far fa-thumbs-up' %}
+          {% endif %}
+  
+          <a href="like/{{ post.id }}"><i
+            class="{{ like_class }}"
+            style="margin-left: 5px; margin-right: 5px;"
+          ></i></a>)</p>
+
+      </div>
     </div>
     <!-- ---------- comments ---------- -->
     <div class="view-comments">
-      <h4 style="margin-left: 20px;">Comments</h4>
+      <h4 style="margin-left: 20px">Comments</h4>
       {% for comment in post.comments %}
       <div class="card">
         <div class="card-body">
           {{ comment.comment_user.username }}:{{ comment.text }}
-          {{current_user.id}}
-          {{comment.comment_user.id}}
-
-          {% if current_user.id == comment.comment_user.id %}
-          <a class="btn btn-danger" href="/delete-comment/{{ comment.id }}">Delete comment</a>
+          {{current_user.id}} {{comment.comment_user.id}} {% if current_user.id
+          == comment.comment_user.id %}
+          <a class="btn btn-danger" href="/delete-comment/{{ comment.id }}"
+            >Delete comment</a
+          >
           {% endif %}
         </div>
       </div>

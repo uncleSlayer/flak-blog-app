@@ -78,3 +78,25 @@ def delete_comment(comment_id):
     db.session.commit()
 
     return redirect(url_for('views.home'))
+
+@views.route('like/<post_id>', methods = ['GET'])
+def like(post_id):
+    from website.models import Posts, Like
+    from website import db
+
+    post = Posts.query.filter(Posts.id == post_id)
+
+    like = Like.query.filter(Like.author == current_user.id).first()
+
+    if like:
+        print('like already there')
+        db.session.delete(like)
+        db.session.commit()
+    else:
+        print('like not there')
+        new_like = Like(author = current_user.id, post = post_id)
+        db.session.add(new_like)
+        current_user.likes.append(new_like)
+        db.session.commit()
+
+    return redirect(url_for('views.home'))

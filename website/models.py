@@ -12,6 +12,7 @@ class User(db.Model, UserMixin):
     creation_date = db.Column(db.DateTime(timezone = True), default = func.now())
     posts = db.relationship('Posts', backref='post_user')
     comments = db.relationship('Comments', backref = 'comment_user')
+    likes = db.relationship('Like', backref = 'like_user')
 
 
 class Posts(db.Model):
@@ -20,6 +21,7 @@ class Posts(db.Model):
     creation_date = db.Column(db.DateTime(timezone = True), default = func.now())
     author = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     comments = db.relationship('Comments', backref = 'comment_post')
+    likes = db.relationship('Like', backref = 'like_post')
 
 class Comments(db.Model):
     id = db.Column(db.Integer, primary_key = True)
@@ -27,3 +29,8 @@ class Comments(db.Model):
     creation_date = db.Column(db.DateTime(timezone = True), default = func.now())
     author = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False)
     post_id = db.Column(db.Integer, db.ForeignKey('posts.id'), nullable = False)
+
+class Like(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    author = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False)
+    post = db.Column(db.Integer, db.ForeignKey('posts.id'), nullable = False)
